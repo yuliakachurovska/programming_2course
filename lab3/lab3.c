@@ -124,61 +124,90 @@ void task6() {
 
 void task7_a() {
     double a, b, c;
-    double x1, x2, D;
+    double x1, x2, D, x1_2;
+    double EPS = 1e-8;
     printf("ax^2+bx+c. Enter value a, b, c = ");
     scanf("%lf %lf %lf", &a, &b, &c);
     D = (b*b) - (4*a*c);
-    if (D < 0) {
+
+    if (fabs(a) < EPS) {
+        // bx + c = 0, де a == 0
+        if (fabs(b) > EPS) {
+            x1 = -c / b;
+            printf("x = %.4lf\n", x1);
+        } else {
+            printf("There are no solutions\n");
+        }
+    }
+
+    else {
+        if (D < 0) {
         printf("There are no solutions!");
-    }
-    if (D == 0) {
-        x1 = (-b) / (2*a);
-        printf("x = %.4lf", x1);
-    }
-    if (D > 0) {
-        x1 = (-b - sqrt(D)) / (2*a);
-        x2 = (-b + sqrt(D)) / (2*a);
-        printf("x1 = %.4lf, x2 = %.4lf", x1, x2);
+        }
+        if (D == 0) {
+            x1 = (-b) / (2*a);
+            printf("x = %.4lf", x1);
+        }
+        if (D > 0) {
+            x1 = (-b - sqrt(D)) / (2*a);
+            x2 = (-b + sqrt(D)) / (2*a);
+            printf("x1 = %.4lf, x2 = %.4lf", x1, x2);
+        }
     }
 }
 
 void task7_b() {
     double a, b, c;
     double x1, x2, D;
-    double flag;
+    double EPS = 1e-8;
+    int flag;
     printf("ax^4+bx^2+c. Enter value a, b, c = ");
     scanf("%lf %lf %lf", &a, &b, &c);
     D = (b*b) - (4*a*c);
     flag = 1;
-    if (D < 0) {
-        printf("There are no solutions!\n");
-        flag = 0;
-    }
-    if (D == 0) {
-        x1 = (-b) / (2*a);
-        //printf("x = %.4lf\n", x1);
-    }
-    if (D > 0) {
-        x1 = (-b - sqrt(D)) / (2*a);
-        x2 = (-b + sqrt(D)) / (2*a);
-       //printf("x1 = %.4lf, x2 = %.4lf\n", x1, x2);
-    }
-    if (flag == 1){
-        if (x1 >= 0 && x2 >= 0) {
-            printf("x1 = %lf, x2 = %lf, x3 = %lf, x4 = %lf", sqrt(x1), -(sqrt(x1)), sqrt(x2), -(sqrt(x2)));    
+
+    if (fabs(a) < EPS) {
+        // a == 0, вирішуємо bx^2 + c = 0
+        if (fabs(b) < EPS) {
+            if (fabs(c) < EPS) {
+                printf("Infinite solutions (0 = 0)\n");
+            } else {
+                printf("There are no solutions (b = 0, c != 0)!\n");
+            }
+        } else {
+            // bx^2 + c = 0
+            x1 = -c / b;
+            if (x1 < 0) {
+                printf("There are no solutions!\n");
+            } else {
+                printf("x1 = %.4lf, x2 = %.4lf\n", sqrt(x1), -sqrt(x1));
+            }
         }
-        if (x1 < 0 && x2 < 0) {
-            printf("There are no solutions!");
+    } else {
+        if (D < 0) {
+            printf("There are no solutions!\n");
+            flag = 0;
+        } else if (fabs(D) < EPS) {
+            x1 = -b / (2 * a);
+        } else {
+            x1 = (-b - sqrt(D)) / (2 * a);
+            x2 = (-b + sqrt(D)) / (2 * a);
         }
-        if (x1 < 0 && x2 > 0) {
-            printf("x1 = %lf, x2 = %lf", sqrt(x2), -(sqrt(x2)));
-        }
-        if (x1 > 0 && x2 < 0) {
-            printf("x1 = %lf, x2 = %lf", sqrt(x1), -(sqrt(x1)));
+
+        if (flag == 1) {
+            if (x1 >= 0 && x2 >= 0) {
+                printf("x1 = %.4lf, x2 = %.4lf, x3 = %.4lf, x4 = %.4lf\n",
+                       sqrt(x1), -sqrt(x1), sqrt(x2), -sqrt(x2));
+            } else if (x1 < 0 && x2 < 0) {
+                printf("There are no solutions!\n");
+            } else if (x1 < 0 && x2 > 0) {
+                printf("x1 = %.4lf, x2 = %.4lf\n", sqrt(x2), -sqrt(x2));
+            } else if (x1 > 0 && x2 < 0) {
+                printf("x1 = %.4lf, x2 = %.4lf\n", sqrt(x1), -sqrt(x1));
+            }
         }
     }
 }
-
 int main() {
     task1();
     task2();
