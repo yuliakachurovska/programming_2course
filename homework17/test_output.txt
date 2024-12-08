@@ -1,0 +1,2 @@
+Allowed characters: abcACD (Length: 6)
+User input: acBDacD (Length: 7)
